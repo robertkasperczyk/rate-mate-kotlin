@@ -1,15 +1,10 @@
 package pl.edu.uj.ratemate.config
 
-import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.web.filter.CorsFilter
-import org.springframework.web.cors.CorsConfiguration
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 
 @Configuration
 class ApiConfig {
-
 //    @Bean
 //    fun corsFilter(): CorsFilter {
 //        val source = UrlBasedCorsConfigurationSource()
@@ -27,4 +22,5 @@ class ApiConfig {
 //        source.registerCorsConfiguration("/**", config)
 //        return CorsFilter(source)
 //    }
+
 }

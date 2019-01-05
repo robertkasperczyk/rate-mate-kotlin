@@ -13,9 +13,8 @@ class ProductController(private val service: ProductService) {
     @RequestMapping("/product/add")
     fun addProduct(file: MultipartFile,
                    @RequestParam("name") name: String,
-                   @RequestParam("description") description: String): ResponseEntity.BodyBuilder {
+                   @RequestParam("description") description: String) {
         service.saveProduct(file, name, description)
-        return ResponseEntity.ok()
     }
 
     @GetMapping("/products/list")
