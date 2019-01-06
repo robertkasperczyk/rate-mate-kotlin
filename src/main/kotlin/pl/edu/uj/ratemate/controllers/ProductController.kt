@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import pl.edu.uj.ratemate.dto.ProductDTO
 import pl.edu.uj.ratemate.entities.Product
+import pl.edu.uj.ratemate.row.ProductRow
 import pl.edu.uj.ratemate.services.ProductService
 
 @RestController
@@ -22,7 +23,7 @@ class ProductController(private val service: ProductService) {
 
     @GetMapping("/products/list")
     fun listProducts(@RequestParam("page") page: Int,
-                     @RequestParam("onPage") onPage: Int): ResponseEntity<List<Product>> {
+                     @RequestParam("onPage") onPage: Int): ResponseEntity<List<ProductRow>> {
         return ResponseEntity.ok(service.listProducts(page, onPage))
     }
 
@@ -57,12 +58,12 @@ class ProductController(private val service: ProductService) {
     }
 
     @GetMapping("/products/ranking")
-    fun ranking(): ResponseEntity<List<Product>> {
+    fun ranking(): ResponseEntity<List<ProductRow>> {
         return ResponseEntity.ok(service.getRanking())
     }
 
     @GetMapping("/products/search")
-    fun search(@RequestParam("phrase") phrase: String): ResponseEntity<List<Product>> {
+    fun search(@RequestParam("phrase") phrase: String): ResponseEntity<List<ProductRow>> {
         return ResponseEntity.ok(service.search(phrase))
     }
 }

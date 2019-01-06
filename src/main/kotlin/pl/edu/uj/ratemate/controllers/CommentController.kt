@@ -5,13 +5,14 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import pl.edu.uj.ratemate.dto.CommentDTO
 import pl.edu.uj.ratemate.entities.Comment
+import pl.edu.uj.ratemate.row.CommentRow
 import pl.edu.uj.ratemate.services.CommentService
 
 @RestController
 class CommentController(private val service: CommentService) {
 
     @GetMapping("/product/{id}/comments")
-    fun getComments(@PathVariable("id") productId: Int): ResponseEntity<List<Comment>> {
+    fun getComments(@PathVariable("id") productId: Int): ResponseEntity<List<CommentRow>> {
         return ResponseEntity.ok(service.getComments(productId))
     }
 

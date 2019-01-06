@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile
 import pl.edu.uj.ratemate.dto.ProductDTO
 import pl.edu.uj.ratemate.entities.Product
 import pl.edu.uj.ratemate.repositories.ProductRepository
+import pl.edu.uj.ratemate.row.ProductRow
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -39,8 +40,10 @@ class ProductService(private val repository: ProductRepository) {
     }
 
     @Transactional(readOnly = true)
-    fun listProducts(page: Int, onPage: Int): List<Product> {
-        return repository.findAll(PageRequest.of(page - 1, onPage)).content
+    fun listProducts(page: Int, onPage: Int): List<ProductRow> {
+        return repository.findAll(PageRequest.of(page - 1, onPage))
+                .content
+                .map { pr -> toRow(pr) }
     }
 
     @Transactional
@@ -55,13 +58,22 @@ class ProductService(private val repository: ProductRepository) {
         repository.save(oldProduct.copy(name = product.name, description = product.description))
     }
 
-    fun getRanking(): List<Product> {
+    fun getRanking(): List<ProductRow> {
         val products = repository.findAll()
-        return products.toList().sortedByDescending { pr -> pr.powerRating + pr.tasteRating + pr.dustRating }
+        return products
+                .toList()
+                .sortedByDescending { pr -> pr.powerRating + pr.tasteRating + pr.dustRating }
+                .map { pr -> toRow(pr) }
     }
 
-    fun search(phrase: String): List<Product> {
+    fun search(phrase: String): List<ProductRow> {
         val products = repository.findAll()
-        return products.toList().filter { pr -> pr.name.contains(phrase) }
+        return products.toList()
+                .filter { pr -> pr.name.contains(phrase) }
+                .map { pr -> toRow(pr) }
+    }
+
+    private fun toRow(product: Product): ProductRow {
+        return ProductRow(product.id, product.name, product.description, product.dustRating, product.powerRating, product.tasteRating)
     }
 }

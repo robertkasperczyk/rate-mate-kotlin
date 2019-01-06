@@ -7,6 +7,7 @@ import pl.edu.uj.ratemate.entities.Comment
 import pl.edu.uj.ratemate.entities.Product
 import pl.edu.uj.ratemate.repositories.CommentRepository
 import pl.edu.uj.ratemate.repositories.ProductRepository
+import pl.edu.uj.ratemate.row.CommentRow
 import java.time.LocalDateTime
 
 @Service
@@ -15,8 +16,8 @@ class CommentService(
         private val productRepository: ProductRepository) {
 
     @Transactional(readOnly = true)
-    fun getComments(productId: Int): List<Comment> {
-        return commentRepository.findByProductId(productId)
+    fun getComments(productId: Int): List<CommentRow> {
+        return commentRepository.findByProductId(productId).map { c -> toRow(c) }
     }
 
     @Transactional
@@ -49,5 +50,9 @@ class CommentService(
 
         productRepository.save(product.copy(dustRating = newDustRating, tasteRating = newTasteRating, powerRating = newPowerRating))
         commentRepository.save(Comment(commentId, product, newComment.content, oldComment.dateTime, newComment.dustRating, newComment.powerRating, newComment.tasteRating))
+    }
+
+    private fun toRow(comment: Comment): CommentRow {
+        return CommentRow(comment.id, comment.content, comment.powerRating, comment.powerRating, comment.tasteRating, comment.dateTime)
     }
 }
