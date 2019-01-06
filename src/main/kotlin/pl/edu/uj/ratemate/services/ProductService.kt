@@ -8,8 +8,16 @@ import pl.edu.uj.ratemate.dto.ProductDTO
 import pl.edu.uj.ratemate.entities.Product
 import pl.edu.uj.ratemate.repositories.ProductRepository
 import pl.edu.uj.ratemate.row.ProductRow
+import java.awt.Color
+import java.awt.Image
+import java.awt.image.BufferedImage
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
+import javax.imageio.ImageIO
+
 
 @Service
 class ProductService(private val repository: ProductRepository) {
@@ -32,7 +40,44 @@ class ProductService(private val repository: ProductRepository) {
         Files.deleteIfExists(fullPath)
 
         Files.createFile(fullPath)
-        stream.transferTo(fullPath)
+
+        val bytes = stream.bytes
+
+        val input = ByteArrayInputStream(bytes)
+        val size = 500
+
+        try {
+            val result: BufferedImage
+            val img = ImageIO.read(input)
+
+            result = if (img.height == img.width) {
+                scaleImage(img, size)
+            } else if (img.height < size && img.width < size) {
+                img
+            } else if(img.height < size || img.width < size) {
+                cropImage(img, Math.min(img.height, img.width))
+            } else {
+                cropImage(img, size)
+            }
+
+            val buffer = ByteArrayOutputStream()
+            ImageIO.write(result, "jpg", buffer)
+
+            Files.write(fullPath, buffer.toByteArray())
+        } catch (e: IOException) {
+            throw RuntimeException("IOException in scale")
+        }
+    }
+
+    private fun cropImage(img: BufferedImage?, size: Int): BufferedImage {
+        return img?.getSubimage((img.width - size) / 2, (img.height - size) / 2, size, size)!!
+    }
+
+    private fun scaleImage(img: BufferedImage, size: Int): BufferedImage {
+        val scaledImage = img.getScaledInstance(size, size, Image.SCALE_SMOOTH)
+        val result = BufferedImage(size, size, BufferedImage.TYPE_INT_RGB)
+        result.graphics.drawImage(scaledImage, 0, 0, Color(0, 0, 0), null)
+        return result
     }
 
     fun getImageForId(id: Int): ByteArray {
