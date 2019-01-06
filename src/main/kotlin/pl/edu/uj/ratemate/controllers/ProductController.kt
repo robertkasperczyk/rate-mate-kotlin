@@ -55,4 +55,14 @@ class ProductController(private val service: ProductService) {
             file: MultipartFile) {
         service.saveImage(id, file)
     }
+
+    @GetMapping("/products/ranking")
+    fun ranking(): ResponseEntity<List<Product>> {
+        return ResponseEntity.ok(service.getRanking())
+    }
+
+    @GetMapping("/products/search")
+    fun search(@RequestParam("phrase") phrase: String): ResponseEntity<List<Product>> {
+        return ResponseEntity.ok(service.search(phrase))
+    }
 }

@@ -54,4 +54,14 @@ class ProductService(private val repository: ProductRepository) {
         val oldProduct = repository.findById(id).get()
         repository.save(oldProduct.copy(name = product.name, description = product.description))
     }
+
+    fun getRanking(): List<Product> {
+        val products = repository.findAll()
+        return products.toList().sortedByDescending { pr -> pr.powerRating + pr.tasteRating + pr.dustRating }
+    }
+
+    fun search(phrase: String): List<Product> {
+        val products = repository.findAll()
+        return products.toList().filter { pr -> pr.name.contains(phrase) }
+    }
 }
