@@ -1,9 +1,6 @@
 package pl.edu.uj.ratemate.entities
 
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
+import javax.persistence.*
 import javax.validation.constraints.NotBlank
 
 @Entity
@@ -16,5 +13,15 @@ data class Product(
         val name: String = "",
 
         @get: NotBlank
-        val description: String = ""
+        val description: String = "",
+
+        val dustRating: Int = 0,
+
+        val powerRating: Int = 0,
+
+        val tasteRating: Int = 0,
+
+        @OneToMany(mappedBy="product", orphanRemoval = true)
+        val comments: List<Comment>
+
 )

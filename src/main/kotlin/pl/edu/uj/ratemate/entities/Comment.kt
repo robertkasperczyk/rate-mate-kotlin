@@ -10,15 +10,21 @@ data class Comment (
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Int = 0,
 
-        @OneToOne
-        val author: User,
+//        @OneToOne
+//        val author: User,
 
         @ManyToOne
+        @JoinColumn(name = "product_id")
         val product: Product,
 
         @get: NotBlank
         val content: String = "",
 
-        @get: NotBlank
-        val dateTime: LocalDateTime
+        val dateTime: LocalDateTime,
+
+        val dustRating: Int = 0,
+
+        val powerRating: Int = 0,
+
+        val tasteRating: Int = 0
 )

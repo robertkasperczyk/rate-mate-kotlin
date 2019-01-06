@@ -1,9 +1,11 @@
 package pl.edu.uj.ratemate.controllers
 
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
+import pl.edu.uj.ratemate.dto.ProductDTO
 import pl.edu.uj.ratemate.entities.Product
 import pl.edu.uj.ratemate.services.ProductService
 
@@ -11,6 +13,7 @@ import pl.edu.uj.ratemate.services.ProductService
 class ProductController(private val service: ProductService) {
 
     @RequestMapping("/product/add")
+    @ResponseStatus(value = HttpStatus.OK)
     fun addProduct(file: MultipartFile,
                    @RequestParam("name") name: String,
                    @RequestParam("description") description: String) {
@@ -31,4 +34,25 @@ class ProductController(private val service: ProductService) {
         return service.getImageForId(id)
     }
 
+    @DeleteMapping("/product/{id}/delete")
+    @ResponseStatus(value = HttpStatus.OK)
+    fun deleteProduct(@PathVariable("id") id: Int) {
+        service.deleteProduct(id)
+    }
+
+    @PostMapping("/product/{id}/edit")
+    @ResponseStatus(value = HttpStatus.OK)
+    fun updateProduct(
+            @PathVariable("id") id: Int,
+            @RequestBody product: ProductDTO) {
+        service.updateProduct(id, product)
+    }
+
+    @RequestMapping("/product/{id}/image/edit")
+    @ResponseStatus(value = HttpStatus.OK)
+    fun updateImage(
+            @PathVariable("id") id: Int,
+            file: MultipartFile) {
+        service.saveImage(id, file)
+    }
 }
