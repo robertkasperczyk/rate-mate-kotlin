@@ -57,10 +57,14 @@ class ProductServiceImpl(private val repository: ProductRepository, private val 
                 .map { pr -> toRow(pr) }
     }
 
-    override fun search(phrase: String): List<ProductRow> {
+    override fun search(phrase: String?): List<ProductRow> {
+        if (phrase == null) {
+            return emptyList()
+        }
+
         val products = repository.findAll()
         return products.toList()
-                .filter { pr -> pr.name.contains(phrase) }
+                .filter { pr -> pr.name.contains(phrase, ignoreCase = true) }
                 .map { pr -> toRow(pr) }
     }
 

@@ -18,7 +18,7 @@ interface ProductService {
 
     fun getRanking(): List<ProductRow>
 
-    fun search(phrase: String): List<ProductRow>
-
     fun saveImage(id: Int, file: MultipartFile)
+
+    fun search(phrase: String?): List<ProductRow>
 }

@@ -62,7 +62,7 @@ class ProductController(private val service: ProductServiceImpl) {
     }
 
     @GetMapping("/products/search")
-    fun search(@RequestParam("phrase") phrase: String): ResponseEntity<List<ProductRow>> {
+    fun search(@RequestParam("phrase", required = false) phrase: String): ResponseEntity<List<ProductRow>> {
         return ResponseEntity.ok(service.search(phrase))
     }
 }
