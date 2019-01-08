@@ -6,12 +6,11 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import pl.edu.uj.ratemate.dto.ProductDTO
-import pl.edu.uj.ratemate.entities.Product
 import pl.edu.uj.ratemate.row.ProductRow
-import pl.edu.uj.ratemate.services.ProductService
+import pl.edu.uj.ratemate.services.implementation.ProductServiceImpl
 
 @RestController
-class ProductController(private val service: ProductService) {
+class ProductController(private val service: ProductServiceImpl) {
 
     @RequestMapping("/product/add")
     @ResponseStatus(value = HttpStatus.OK)

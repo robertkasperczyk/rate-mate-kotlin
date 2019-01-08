@@ -1,5 +1,6 @@
-package pl.edu.uj.ratemate.util
+package pl.edu.uj.ratemate.utils
 
+import org.springframework.context.annotation.Lazy
 import org.springframework.stereotype.Service
 import java.awt.Color
 import java.awt.Image
@@ -11,6 +12,7 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import javax.imageio.ImageIO
 
+@Lazy
 @Service
 class ImageSaver {
 

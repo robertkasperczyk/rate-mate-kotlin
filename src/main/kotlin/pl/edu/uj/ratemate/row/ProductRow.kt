@@ -6,5 +6,6 @@ data class ProductRow (
         val description: String,
         val dustRating: Int,
         val powerRating: Int,
-        val tasteRating: Int
+        val tasteRating: Int,
+        val comments: List<CommentRow>
 )
