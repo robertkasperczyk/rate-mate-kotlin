@@ -25,21 +25,34 @@ class CommentServiceImpl(
     @Transactional
     override fun addComment(productId: Int, comment: CommentDTO) {
         val product = productRepository.findById(productId).get()
-        val ratings = productRepository.countComments(productId)
-        val newDustRating = (product.dustRating * ratings + comment.dustRating) / (ratings + 1)
-        val newPowerRating = (product.powerRating * ratings + comment.powerRating) / (ratings + 1)
-        val newTasteRating = (product.tasteRating * ratings + comment.tasteRating) / (ratings + 1)
-
         val user = userRegister.resolveByUserName(comment.username)
-
-        productRepository.save(product.copy(dustRating = newDustRating, tasteRating = newTasteRating, powerRating = newPowerRating))
         commentRepository.save(Comment(0, user, product, comment.content, LocalDateTime.now(),
                 comment.dustRating, comment.powerRating, comment.tasteRating))
+
+        val ratings = productRepository.countComments(productId)
+        val newDustRating = (product.dustRating * (ratings - 1) + comment.dustRating) / ratings
+        val newPowerRating = (product.powerRating * (ratings - 1) + comment.powerRating) / ratings
+        val newTasteRating = (product.tasteRating * (ratings - 1) + comment.tasteRating) / ratings
+
+        productRepository.save(product.copy(dustRating = newDustRating, tasteRating = newTasteRating, powerRating = newPowerRating))
     }
 
     @Transactional
     override fun deleteComment(id: Int) {
+        val comment = commentRepository.findById(id).get()
         commentRepository.deleteById(id)
+        val product = comment.product
+        val ratings = productRepository.countComments(product.id)
+
+        if (ratings == 0) {
+            productRepository.save(product.copy(dustRating = 0, tasteRating = 0, powerRating = 0))
+        }
+
+        val newDustRating = (product.dustRating * (ratings + 1) - comment.dustRating) / ratings
+        val newPowerRating = (product.powerRating * (ratings + 1) - comment.powerRating) / ratings
+        val newTasteRating = (product.tasteRating * (ratings + 1) - comment.tasteRating) / ratings
+
+        productRepository.save(product.copy(dustRating = newDustRating, tasteRating = newPowerRating, powerRating = newTasteRating))
     }
 
     @Transactional
