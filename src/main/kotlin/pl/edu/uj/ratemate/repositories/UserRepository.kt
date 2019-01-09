@@ -3,6 +3,9 @@ package pl.edu.uj.ratemate.repositories
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 import pl.edu.uj.ratemate.entities.User
+import java.util.*
 
 @Repository
-interface UserRepository : CrudRepository<User, Int>
+interface UserRepository : CrudRepository<User, Int> {
+    fun findByLogin(username: String): Optional<User>
+}

@@ -11,8 +11,8 @@ data class Comment(
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Int = 0,
 
-//        @OneToOne
-//        val author: User,
+        @OneToOne
+        val author: User,
 
         @ManyToOne
         @JoinColumn(name = "product_id")
@@ -30,6 +30,6 @@ data class Comment(
         val tasteRating: Int = 0
 ) {
     fun toRow(): CommentRow {
-        return CommentRow(id, content, powerRating, powerRating, tasteRating, dateTime)
+        return CommentRow(id, content, powerRating, powerRating, tasteRating, dateTime, author.login)
     }
 }
