@@ -9,5 +9,5 @@ data class CommentRow (
         val powerRating: Int,
         val tasteRating: Int,
         val dateTime: LocalDateTime,
-        val login: String
+        val username: String
 )

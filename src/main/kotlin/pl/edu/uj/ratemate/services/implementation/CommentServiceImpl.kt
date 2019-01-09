@@ -31,7 +31,7 @@ class CommentServiceImpl(
         val newPowerRating = (product.powerRating * ratings + comment.powerRating) / (ratings + 1)
         val newTasteRating = (product.tasteRating * ratings + comment.tasteRating) / (ratings + 1)
 
-        val user = userRepository.findByLogin(comment.username).orElse(userRepository.save(User(0, comment.username)))
+        val user = userRepository.findByUsername(comment.username).orElse(userRepository.save(User(0, comment.username)))
 
         productRepository.save(product.copy(dustRating = newDustRating, tasteRating = newTasteRating, powerRating = newPowerRating))
         commentRepository.save(Comment(0, user, product, comment.content, LocalDateTime.now(),

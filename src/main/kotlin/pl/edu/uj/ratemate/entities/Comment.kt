@@ -30,6 +30,6 @@ data class Comment(
         val tasteRating: Int = 0
 ) {
     fun toRow(): CommentRow {
-        return CommentRow(id, content, powerRating, powerRating, tasteRating, dateTime, author.login)
+        return CommentRow(id, content, powerRating, powerRating, tasteRating, dateTime, author.username)
     }
 }

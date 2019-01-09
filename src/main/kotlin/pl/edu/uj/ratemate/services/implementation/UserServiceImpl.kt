@@ -8,6 +8,6 @@ import pl.edu.uj.ratemate.services.interfaces.UserService
 @Service
 class UserServiceImpl(private val userRepository: UserRepository) : UserService {
     override fun listUsers(): List<String> {
-        return userRepository.findAll().map(User::login)
+        return userRepository.findAll().map(User::username)
     }
 }

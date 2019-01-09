@@ -11,7 +11,7 @@ data class User (
 
         @Column(unique = true)
         @get: NotBlank
-        val login: String
+        val username: String
 
 //        @get: NotBlank
 //        val passwordHash: String
