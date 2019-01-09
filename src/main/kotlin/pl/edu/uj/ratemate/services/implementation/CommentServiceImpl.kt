@@ -4,19 +4,18 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import pl.edu.uj.ratemate.dto.CommentDTO
 import pl.edu.uj.ratemate.entities.Comment
-import pl.edu.uj.ratemate.entities.User
 import pl.edu.uj.ratemate.repositories.CommentRepository
 import pl.edu.uj.ratemate.repositories.ProductRepository
-import pl.edu.uj.ratemate.repositories.UserRepository
 import pl.edu.uj.ratemate.row.CommentRow
 import pl.edu.uj.ratemate.services.interfaces.CommentService
+import pl.edu.uj.ratemate.utils.UserRegister
 import java.time.LocalDateTime
 
 @Service
 class CommentServiceImpl(
         private val commentRepository: CommentRepository,
         private val productRepository: ProductRepository,
-        private val userRepository: UserRepository) : CommentService {
+        private val userRegister: UserRegister) : CommentService {
 
     @Transactional(readOnly = true)
     override fun getComments(productId: Int): List<CommentRow> {
@@ -31,7 +30,7 @@ class CommentServiceImpl(
         val newPowerRating = (product.powerRating * ratings + comment.powerRating) / (ratings + 1)
         val newTasteRating = (product.tasteRating * ratings + comment.tasteRating) / (ratings + 1)
 
-        val user = userRepository.findByUsername(comment.username).orElse(userRepository.save(User(0, comment.username)))
+        val user = userRegister.resolveByUserName(comment.username)
 
         productRepository.save(product.copy(dustRating = newDustRating, tasteRating = newTasteRating, powerRating = newPowerRating))
         commentRepository.save(Comment(0, user, product, comment.content, LocalDateTime.now(),
