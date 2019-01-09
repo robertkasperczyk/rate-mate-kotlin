@@ -7,4 +7,6 @@ import pl.edu.uj.ratemate.entities.Comment
 @Repository
 interface CommentRepository : CrudRepository<Comment, Int> {
     fun findByProductId(id: Int) : List<Comment>
+
+    fun countByAuthorId(id: Int): Int
 }

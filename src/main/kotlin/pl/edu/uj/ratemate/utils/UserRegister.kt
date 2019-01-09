@@ -8,15 +8,19 @@ import javax.annotation.PostConstruct
 @Component
 class UserRegister(private val userRepository: UserRepository) {
 
-    private val registry: MutableMap<String, User> = HashMap()
+    private val register: MutableMap<String, User> = HashMap()
 
     @PostConstruct
     fun init() {
-        registry.putAll(userRepository.findAll().associate { it.username to it })
+        register.putAll(userRepository.findAll().associate { it.username to it })
     }
 
     fun resolveByUserName(username: String): User {
-        return registry.computeIfAbsent(username) { un -> userRepository.save(User(0, un)) }
+        return register.computeIfAbsent(username) { un -> userRepository.save(User(0, un)) }
+    }
+
+    fun findAll(): List<User> {
+        return register.values.toList()
     }
 
 }
