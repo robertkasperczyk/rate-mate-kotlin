@@ -45,7 +45,7 @@ class CommentServiceImpl(
         val ratings = productRepository.countComments(product.id)
 
         if (ratings == 0) {
-            productRepository.save(product.copy(dustRating = 0, tasteRating = 0, powerRating = 0))
+            productRepository.save(product.copy(dustRating = 0.0, tasteRating = 0.0, powerRating = 0.0))
         }
 
         val newDustRating = (product.dustRating * (ratings + 1) - comment.dustRating) / ratings
@@ -62,14 +62,14 @@ class CommentServiceImpl(
         val ratings = productRepository.countComments(productId)
         val newDustRating = (product.dustRating * ratings - oldComment.dustRating + newComment.dustRating) / ratings
         val newPowerRating = (product.powerRating * ratings - oldComment.powerRating + newComment.powerRating) / ratings
-        val newTasteRating = (product.tasteRating * ratings - oldComment.tasteRating + newComment.tasteRating) / ratings
+        val newTasteRating = (product.tasteRating * ratings - oldComment.tasteRating + newComment.tasteRating) / ratings.toDouble()
 
         productRepository.save(product.copy(dustRating = newDustRating, tasteRating = newTasteRating, powerRating = newPowerRating))
         commentRepository.save(commentRepository
                 .findById(commentId).get().copy(
                         content = newComment.content,
-                        powerRating = newPowerRating,
-                        dustRating = newDustRating,
-                        tasteRating = newTasteRating))
+                        powerRating = newComment.powerRating,
+                        dustRating = newComment.dustRating,
+                        tasteRating = newComment.tasteRating))
     }
 }

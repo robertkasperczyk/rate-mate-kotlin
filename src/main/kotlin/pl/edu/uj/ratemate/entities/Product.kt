@@ -15,11 +15,11 @@ data class Product(
         @get: NotBlank
         val description: String = "",
 
-        val dustRating: Int = 0,
+        val dustRating: Double = 0.0,
 
-        val powerRating: Int = 0,
+        val powerRating: Double = 0.0,
 
-        val tasteRating: Int = 0,
+        val tasteRating: Double = 0.0,
 
         @OneToMany(mappedBy="product", orphanRemoval = true)
         val comments: List<Comment>

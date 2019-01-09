@@ -4,8 +4,8 @@ data class ProductRow (
         val id: Int,
         val name: String,
         val description: String,
-        val dustRating: Int,
-        val powerRating: Int,
-        val tasteRating: Int,
+        val dustRating: Double,
+        val powerRating: Double,
+        val tasteRating: Double,
         val comments: List<CommentRow>
 )
