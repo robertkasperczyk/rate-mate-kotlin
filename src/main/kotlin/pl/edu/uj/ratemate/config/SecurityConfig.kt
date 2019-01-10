@@ -27,16 +27,6 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
                 .and()
                 .csrf()
                 .disable()
-
-//        http
-//                .authorizeRequests()
-//                .antMatchers("/none")
-//                .permitAll()
-//                .anyRequest()
-//                .fullyAuthenticated()
-//                .and()
-//                .httpBasic()
-//                .and().csrf().disable()
     }
 
     @Bean
